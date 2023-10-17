@@ -1,11 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include<time.h>
+char ticket(char ticket){
+    printf("\nQuer comprar o Ticket? (S/N): ");
+    scanf(" %c", &ticket);
+    ticket=toupper(ticket);
+    printf("\n%c\n", ticket);
+    if(ticket!='S' && ticket!='N'){
+        do{
+            printf("\n Opção inválida, digite novamente...\nQuer comprar o Ticket? (S/N): ");
+            scanf(" %c", &ticket);
+            ticket=toupper(ticket);
+        }while(ticket!='S' && ticket!='N');
+    }
+    if(ticket=='S'){
+        printf("\nComprando...");
+    }else if(ticket=='N'){
+
+    }else {
+        do{
+            printf("\nOpção inválida, digite novamente...\nQuer comprar o Ticket? (S/N): ");
+            scanf(" %c", &ticket);
+        }while(ticket!='S' || ticket!='N');
+    }
+    return ticket;
+}
+int voltaMenu(int op){
+    printf("\n1- voltar ao menu inicial\n0- Finalizar: ");
+    scanf("%d", &op);
+    printf("\n%d\n", op);
+    if(op!=0 && op!=1)
+        do{
+            printf("\nOpção inválida, digite novamente...\n1- voltar ao menu inicial\n0- Finalizar: ");
+            scanf("%d", &op);
+        }while(op!=0 && op!=1);
+    return op;
+}
 int main(){
-    int op;
-    char aceiteTicket, opMenu;
+    int op, opMenu=1;
+    char aceiteTicket;
     setlocale(LC_ALL,"portuguese");
     do{
+        opMenu=1;
         printf("*****bem vindo ao museu*****\n");
         printf("1 - Semana da arte moderna\n");
         printf("2 - 150 Anos Santos Dumont\n");
@@ -26,33 +63,30 @@ int main(){
             printf("Infos Opção 1\n");
             system("pause");
             system("cls");
-            printf("\nQuer comprar o Ticket? (S/N): ");
-            scanf(" %c", &aceiteTicket);
-            toupper(aceiteTicket);
-            printf("\n%c\n", aceiteTicket);
-            if(aceiteTicket!='S' && aceiteTicket!='N'){
-                do{
-                    printf("\n Opção inválida, digite novamente...\nQuer comprar o Ticket? (S/N): ");
-                    scanf(" %c", &aceiteTicket);
-                }while(aceiteTicket!='S' || aceiteTicket!='N');
-            }
+            aceiteTicket=ticket(aceiteTicket);
             if(aceiteTicket=='S'){
-                printf("\nComprando...");
-            }else if(aceiteTicket=='N'){
-                printf("\Não deseja voltar ao menu inicial?(S/N): ");
-                scanf("%c", &opMenu);
-            }else {
-                do{
-                    printf("\n Opção inválida, digite novamente...\nQuer comprar o Ticket? (S/N): ");
-                    scanf(" %c", &aceiteTicket);
-                }while(aceiteTicket!='S' || aceiteTicket!='N');
+                printf("\nTenha um bom passeio!!!\n");
+                opMenu=voltaMenu(opMenu);
+                sleep(1);
+            }else{
+                printf("\nOk...\n");
+                opMenu=voltaMenu(opMenu);
             }
-
+            system("cls");
             break;
         case 2:
             system("cls");
             printf("Infos Opção 2\n");
             system("pause");
+            system("cls");
+            if(aceiteTicket=='S'){
+                printf("\nTenha um bom passeio!!!\n");
+                opMenu=voltaMenu(opMenu);
+                sleep(1);
+            }else{
+                printf("\nOk...\n");
+                opMenu=voltaMenu(opMenu);
+            }
             system("cls");
             break;
         case 3:
@@ -60,14 +94,33 @@ int main(){
             printf("Infos Opção 3\n");
             system("pause");
             system("cls");
+            if(aceiteTicket=='S'){
+                printf("\nTenha um bom passeio!!!\n");
+                opMenu=voltaMenu(opMenu);
+                sleep(1);
+            }else{
+                printf("\nOk...\n");
+                opMenu=voltaMenu(opMenu);
+            }
+            system("cls");
             break;
         case 4:
             system("cls");
             printf("Infos Opção 4\n");
             system("pause");
             system("cls");
+            if(aceiteTicket=='S'){
+                printf("\nTenha um bom passeio!!!\n");
+                opMenu=voltaMenu(opMenu);
+                sleep(1);
+            }else{
+                printf("\nOk...\n");
+                opMenu=voltaMenu(opMenu);
+            }
+            system("cls");
             break;
         }
-    }while(op!=0);
+    }while(op!=0 && opMenu!=0);
+    printf("\nBye...\n");
     return 0;
 }
