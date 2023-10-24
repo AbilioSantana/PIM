@@ -15,6 +15,7 @@ int main(){
     int op, opMenu=1;
     char aceiteTicket;
     setlocale(LC_ALL,"portuguese");
+    system("cls");
     do{
         opMenu=1;
         printf("\n");
