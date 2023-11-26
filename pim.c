@@ -11,8 +11,8 @@
 //#define TIC_FILE "bilhetes.csv"
 //#define SESSAO_FILE "sessao.csv"
 
-#define MAX_QTD  10
-#define MAX_QTD_IDOSO  2
+const int MAX_QTD = 10;
+const int MAX_QTD_IDOSO = 2;
 
 
 typedef struct {
@@ -56,7 +56,7 @@ Sessao validaSessao(int expo, int idoso);
 int main(){
     int op;
     char aceiteTicket;
-    setlocale(LC_ALL,"pt_BR.UTF8");
+    setlocale(LC_ALL,"pt_BR_utf8");
     initArqs();
     printf("\e[1;1H\e[2J");
     do{
@@ -126,7 +126,8 @@ int main(){
             aceiteTicket=ticket(3);
             verificaTicket(&aceiteTicket);
 
-            printf("\e[1;1H\e[2J");
+            printf("\nvoltou\n");
+            //printf("\e[1;1H\e[2J");
             break;
         case 4:
             printf("\e[1;1H\e[2J");
@@ -609,7 +610,7 @@ void compraTicket(int expo){
         trocaTela();
         sessao=validaSessao(expo, idoso);
     }while(sessao.suc==1);
-    printf("\e[1;1H\e[2J");
+    //printf("\e[1;1H\e[2J");
     if (verificaMenu==0){
         FILE * ticLog = fopen("bilhetes.csv", "r+");
         if(!ticLog){
@@ -623,22 +624,22 @@ void compraTicket(int expo){
             mostraTitulo(5);
             switch (sessao.suc){
                 case 0: //compra idade<65
-                    printf("O valor da inteira é R$20,00\n o pagamento será realizado na bilheteria do museu...");
+                    printf("\n\t\t\t\tO valor da inteira é R$20,00\n\t\t\t\tO pagamento será realizado na bilheteria do museu...");
 
                     break;
                 case 1://falha na escolha de sessão
                     
                     break;
                 case 2://compra idade >=65 == 50% desconto >> sem vagas gratuitas disponiveis
-                    printf("O valor da meia-entrada é R$10,00\n o pagamento será realizado na bilheteria do museu...");
+                    printf("\n\t\t\t\tO valor da meia-entrada é R$10,00\n\t\t\t\tO pagamento será realizado na bilheteria do museu...");
                     break;
                 case 3://compra idade >=65 grátis
-                    printf("Sua entrada é gratuita nesta sessão \n apenas realize o check in na bilheteria do museu...");
+                    printf("\n\t\t\t\tSua entrada é gratuita nesta sessão \n\t\t\t\tApenas realize o check in na bilheteria do museu...");
                     break;
                 default:
                     FILE * STDERRR = fopen("logErr.txt", "a");
                     fseek(STDERRR, 0, 2);
-                    printf("\n\nOcorreu um erro, favor reiniciar o programa e tentar novamente, caso persista contate a administração do museu\n\n");
+                    printf("\n\n\n\t\t\t\tOcorreu um erro, favor reiniciar o programa e tentar novamente, caso persista contate a administração do museu\n\n");
                     fprintf(STDERRR,"Possivel overflow de memoria na verificação de sessão\n");
                     fclose(STDERRR);
                     break;
@@ -688,22 +689,21 @@ Pessoa recebeCadastro(){
     if(!cad){
         FILE * STDERRR = fopen("logErr.txt", "a");
         fseek(STDERRR, 0, 2);
-        printf("\n\nOcorreu um erro, favor reiniciar o programa e tentar novamente, caso persista contate a administração do museu\n\n");
+        printf("\n\n\n\t\t\t\tOcorreu um erro, favor reiniciar o programa e tentar novamente, caso persista contate a administração do museu\n\n");
         fprintf(STDERRR,"Erro abertura do arquivo cadastro.csv\n");
         fclose(STDERRR);
         getchar();
     }else{
-        printf("\t\t\t%s", cliente.nome);
         int id, idade, aux=0;
         char nome[101],tel[20],email[101];
-        for (int i = 0; cliente.nome == '\0' ; i++){
+        for(int i = 0; cliente.nome == '\0' ; i++){
             printf("%d\n", i);
             cliente.nome[i] = toupper(cliente.nome[i]);
         }
         while(fscanf(cad, "%d;%[^;];%d;%s;%s\n", &id, nome, &idade, tel, email) == 5){
             if(strcmp(nome, cliente.nome) == 0){ //achou cliente.no cadastro
-                printf("Voce foi encontrado no cadastro\n");
-                printf("Seguindo para compra do bilhete...\n");
+                printf("\n\t\t\t\tVoce foi encontrado no cadastro\n");
+                printf("\n\t\t\t\tSeguindo para compra do bilhete...\n");
                 if(cliente.idade >= 65){
                     cliente.idoso = 1;
                 }else{
@@ -734,8 +734,18 @@ Pessoa recebeCadastro(){
 
 Pessoa recebeDados(){
     Pessoa cliente;
+    char nome[101];
+    int i = 0;
     printf("\t\t\t\tdigite seu nome: ");
-    scanf("%s", cliente.nome);
+    //fgets(nome, 101*sizeof(char), stdin);
+    scanf("%c", &nome[i]);
+    for(i = 0; nome == '\0' ; i++){
+        if(nome[i] == '\n'){
+            scanf("%c", &nome[i]);
+            nome[i]='\0';
+        }
+        cliente.nome[i]=nome[i];
+    }
     while (getchar() != '\n');
     
     printf("\t\t\t\tdigite sua idade: ");
@@ -748,7 +758,9 @@ Pessoa recebeDados(){
 
     printf("\t\t\t\tdigite seu email: ");
     scanf("%s", cliente.email);
+
     while (getchar() != '\n');
+    printf("%s", cliente.nome);
     return cliente;
 }
 
@@ -770,22 +782,27 @@ Sessao validaSessao(int expo, int idoso){
     printf("\t\t\t\t4 - 14h\t5 - 15h\t6 - 16h\n\t\t\t\t0 - voltar ao Menu \n");
     printf("\t\t\t\tEntre com sua opção: ");
     scanf("%d", &sessao.hora);
-    if(sessao.hora==0)
+    if(sessao.hora==0){
         verificaMenu=1;
+    }
     FILE* sessaoLog;
     sessaoLog=fopen("sessao.csv", "r+");
     if(!sessaoLog){
         FILE * STDERRR = fopen("logErr.txt", "a");
         fseek(STDERRR, 0, 2);
-        printf("\n\nOcorreu um erro, favor reiniciar o programa e tentar novamente, caso persista contate a administração do museu\n\n");
+        printf("\n\n\n\t\t\t\tOcorreu um erro, favor reiniciar o programa e tentar novamente, caso persista contate a administração do museu\n\n");
         fprintf(STDERRR,"Erro na abertura do arquivo sessao.csv\n");
         fclose(STDERRR);
         getchar();
     }else{
+        getchar();
+        
         while(fscanf(sessaoLog, "%d;%d;%d;%d\n", &compSessao.expo, &compSessao.hora, &compSessao.qtd, &compSessao.qtdIdoso) == 4){
+            printf("\ndebugging\n");
+            getchar();
             if(compSessao.expo==sessao.expo && compSessao.hora==sessao.hora){
                 if(compSessao.qtd >= MAX_QTD){
-                    printf("\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
+                    printf("\n\n\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
                     sessao.suc=1;
                     fclose(sessaoLog);
                     sleep(1);
@@ -793,18 +810,18 @@ Sessao validaSessao(int expo, int idoso){
                 }
                 else if(idoso==0 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd < MAX_QTD){
                     char op;
-                    printf("\t\t\t\tInfelizmente não temos mais vagas gratuitas para idosos nesta sessao... mas possuímos %d vagas no total e seu ingresso terá 50%% de desconto deseja continuar comprando ingresso? (S/N): \n", MAX_QTD - compSessao.qtd);
+                    printf("\n\n\t\t\t\tInfelizmente não temos mais vagas gratuitas para idosos nesta sessao... mas possuímos %d vagas no total e seu ingresso terá 50%% de desconto deseja continuar comprando ingresso? (S/N): \n", MAX_QTD - compSessao.qtd);
                     scanf("%c", &op);
                     op=toupper(op);
                     if(op!='S' && op!='N'){
                         do{
-                            printf("\n\t\t\t\t Opção inválida, digite novamente: ");
+                            printf("\n\n\n\t\t\t\t Opção inválida, digite novamente: ");
                             scanf(" %c", &op);
                             op=toupper(op);
                         }while(op!='S' && op!='N');
                     }
                     if(op=='S'){
-                        printf("\n\t\t\t\tOK, seguiremos para a parte de compra...");
+                        printf("\n\n\n\t\t\t\tOK, seguiremos para a parte de compra...");
                         printf("\n");
                         fseek(sessaoLog, -5, 2);
                         fprintf(sessaoLog,"%02d",compSessao.qtd + 1);
@@ -813,7 +830,7 @@ Sessao validaSessao(int expo, int idoso){
                         fclose(sessaoLog);
                         break;
                     }else if(op=='N'){
-                        printf("\n\t\t\t\tOK, voce será redirecionado à seleção de sessões novamente...");
+                        printf("\n\n\n\t\t\t\tOK, voce será redirecionado à seleção de sessões novamente...");
                         printf("\n");
                         fclose(sessaoLog);
                         sleep(1);
@@ -821,7 +838,7 @@ Sessao validaSessao(int expo, int idoso){
                     }
                 }
                 else if(idoso==0 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd >= MAX_QTD){
-                    printf("\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
+                    printf("\n\n\n\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
                     sessao.suc=1;
                     fclose(sessaoLog);
                     sleep(1);
@@ -829,9 +846,9 @@ Sessao validaSessao(int expo, int idoso){
                 }
                 else if(compSessao.qtd < MAX_QTD){
                     if(idoso==0 && compSessao.qtdIdoso<= MAX_QTD_IDOSO){
-                        printf("\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD, MAX_QTD_IDOSO);
+                        printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD-compSessao.qtd, MAX_QTD_IDOSO-compSessao.qtdIdoso);
                         sleep(1);
-                        printf("\n\t\t\t\tSeguiremos para a parte de compra...");
+                        printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
                         printf("\n");
                         fseek(sessaoLog, -5, 2);
                         fprintf(sessaoLog,"%02d;%d",compSessao.qtd + 1, compSessao.qtdIdoso + 1);
@@ -840,9 +857,9 @@ Sessao validaSessao(int expo, int idoso){
                         fclose(sessaoLog);
                         break;
                     }else{
-                        printf("\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD);
+                        printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD-compSessao.qtd);
                         sleep(1);
-                        printf("\n\t\t\t\tSeguiremos para a parte de compra...");
+                        printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
                         printf("\n");
                         fseek(sessaoLog, -5, 2);
                         fprintf(sessaoLog,"%02d",compSessao.qtd + 1);
@@ -858,25 +875,27 @@ Sessao validaSessao(int expo, int idoso){
                 sessao.qtd=0;
                 sessao.qtdIdoso=0;
                 fprintf(sessaoLog,"%d;%d;%02d;%d\n", sessao.expo, sessao.hora, sessao.qtd, sessao.qtdIdoso);
+                printf("%d;%d;%02d;%d\n", sessao.expo, sessao.hora, sessao.qtd, sessao.qtdIdoso);
+
                 if(compSessao.qtd < MAX_QTD){
                     if(idoso==0 ){
-                        printf("\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD, MAX_QTD_IDOSO);
+                        printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD-sessao.qtd, MAX_QTD_IDOSO-sessao.qtdIdoso);
                         sleep(1);
-                        printf("\n\t\t\t\tSeguiremos para a parte de compra...");
+                        printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
                         printf("\n");
                         fseek(sessaoLog, -5, 2);
-                        fprintf(sessaoLog,"%02d;%d",compSessao.qtd + 1, compSessao.qtdIdoso + 1);
+                        fprintf(sessaoLog,"%02d;%d",sessao.qtd + 1, sessao.qtdIdoso + 1);
                         sleep(1);
                         sessao.suc=3;
                         fclose(sessaoLog);
                         break;
                     }else{
-                        printf("\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD);
+                        printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD-sessao.qtd);
                         sleep(1);
-                        printf("\n\t\t\t\tSeguiremos para a parte de compra...");
+                        printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
                         printf("\n");
                         fseek(sessaoLog, -5, 2);
-                        fprintf(sessaoLog,"%02d",compSessao.qtd + 1);
+                        fprintf(sessaoLog,"%02d",sessao.qtd + 1);
                         sleep(1);
                         sessao.suc=0;
                         fclose(sessaoLog);
@@ -885,6 +904,37 @@ Sessao validaSessao(int expo, int idoso){
                 }
             }
         }
+        if(compSessao.expo!=sessao.expo && compSessao.hora!=sessao.hora && verificaMenu!=1){
+            fseek(sessaoLog, 0, 2);
+            sessao.qtd=0;
+            sessao.qtdIdoso=0;
+            fprintf(sessaoLog,"%d;%d;%02d;%d\n", sessao.expo, sessao.hora, sessao.qtd, sessao.qtdIdoso);
+
+            if(idoso==0 ){
+                printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD, MAX_QTD_IDOSO);
+                sleep(1);
+                printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
+                printf("\n");
+                fseek(sessaoLog, -5, 2);
+                fprintf(sessaoLog,"%02d;%d",sessao.qtd + 1, sessao.qtdIdoso + 1);
+                sleep(1);
+                sessao.suc=3;
+                fclose(sessaoLog);
+            }else{
+                printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD);
+                sleep(1);
+                printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
+                printf("\n");
+                fseek(sessaoLog, -5, 2);
+                fprintf(sessaoLog,"%02d",sessao.qtd + 1);
+                sleep(1);
+                sessao.suc=0;
+                fclose(sessaoLog);
+            }
+
+            printf("%d;%d;%02d;%d\n", sessao.expo, sessao.hora, sessao.qtd, sessao.qtdIdoso);
+        }
+        getchar();
     }
 
     return sessao;
