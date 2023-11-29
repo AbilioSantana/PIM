@@ -53,7 +53,22 @@ int main(){
     int op;
     char aceiteTicket;
     setlocale(LC_ALL,"pt_BR_utf8");
-    initArqs();
+    //initArqs();
+
+    // FILE * a = fopen("bilhetes.csv", "r");
+    // if(a==NULL){
+    //     fclose(a);
+    //     FILE * a = fopen("bilhetes.csv", "w");
+    // }
+    // fclose(a);
+
+    // FILE * b = fopen("sessao.dat", "r");
+    // if(b==NULL){
+    //     fclose(b);
+    //     FILE * b = fopen("sessao.dat", "w");
+    // }
+    // fclose(b);
+
     system("clear");
     do{
         
@@ -144,7 +159,7 @@ int main(){
             system("clear");
             break;
         }
-    }while(op!=0 && verificaMenu!=1);
+    }while(op!=0 && verificaMenu==0 || verificaMenu==1);
     printf("\n");
     printf("\n");
     printf("\n");
@@ -930,8 +945,9 @@ Sessao validaSessao(int expo, int idoso){
         }while(sessao.hora!=0 && sessao.hora!=1 && sessao.hora!=2 && sessao.hora!=3 && sessao.hora!=4 && sessao.hora!=5 && sessao.hora!=6);
     }
     if(sessao.hora==0){
-        sessao.suc==1;
-        verificaMenu==1;
+        verificaMenu=1;
+        sessao.suc=4;
+        goto fim;
     }
 
     FILE* sessaoLog;
@@ -945,116 +961,116 @@ Sessao validaSessao(int expo, int idoso){
         getchar();
     }else{
         int aux=0;
-        while(fread(&compSessao, sizeof(Sessao), 1, sessaoLog)){
-
-            if(compSessao.expo==sessao.expo && compSessao.hora==sessao.hora){
-                if(compSessao.qtd >= MAX_QTD){
-                    printf("\n\n\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
-                    sessao.suc=1;
-                    fclose(sessaoLog);
-                    //getchar();
-                    goto returnSessao;
-                    break;
-                }else if(idoso==1 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd < MAX_QTD){
-                    char op;
-                    printf("\n\n\t\t\t\tInfelizmente não temos mais vagas gratuitas para idosos nesta sessao...");
-                    printf("\n\t\t\t\tMas possuímos %d vagas no total e seu ingresso terá 50%% de desconto ", MAX_QTD - compSessao.qtd);
-                    printf("\n\t\t\t\tDeseja continuar comprando ingresso? (S/N): \n");
-                    scanf("%c", &op);
-                    op=toupper(op);
-                    if(op!='S' && op!='N'){
-                        do{
-                            printf("\n\n\n\t\t\t\t Opção inválida, digite novamente: ");
-                            scanf(" %c", &op);
-                            op=toupper(op);
-                        }while(op!='S' && op!='N');
-                    }else{}
-                    if(op=='S'){
-                        printf("\n\n\n\t\t\t\tOK, seguiremos para a parte de compra...");
-                        printf("\n");
-                        fseek(sessaoLog, aux*sizeof(Sessao), 0);
-                        compSessao.qtd++;
-                        fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
-                        sessao.suc=2;
-                        fclose(sessaoLog);
-                        getchar();
-                        break;
-                    }else if(op=='N'){
-                        printf("\n\n\n\t\t\t\tOK, voce será redirecionado à seleção de sessões novamente...");
-                        printf("\n");
+        
+            while(fread(&compSessao, sizeof(Sessao), 1, sessaoLog)){
+                if(compSessao.expo==sessao.expo && compSessao.hora==sessao.hora){
+                    if(compSessao.qtd >= MAX_QTD){
+                        printf("\n\n\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
                         sessao.suc=1;
                         fclose(sessaoLog);
                         //getchar();
                         goto returnSessao;
-                    }
-                }else if(idoso==1 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd >= MAX_QTD){
-                    printf("\n\n\n\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
-                    sessao.suc=1;
-                    fclose(sessaoLog);
-                    //getchar();
-                    goto returnSessao;
-                    break;
-                }else if(compSessao.qtd < MAX_QTD){
-                    if(idoso==1 && compSessao.qtdIdoso<= MAX_QTD_IDOSO){
-                        printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD-compSessao.qtd, MAX_QTD_IDOSO-compSessao.qtdIdoso);
-                        sleep(1);
-                        printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
-                        printf("\n");
-                        fseek(sessaoLog, aux*sizeof(Sessao), 0);
-                        compSessao.qtd++;
-                        compSessao.qtdIdoso++;
-                        fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
-                        sessao.suc=3;
-                        fclose(sessaoLog);
-                        getchar();
                         break;
-                    }else{
-                        printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD-compSessao.qtd);
-                        sleep(1);
-                        printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
-                        printf("\n");
-                        fseek(sessaoLog, aux*sizeof(Sessao), 0);
-                        compSessao.qtd++;
-                        fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
-                        sessao.suc=0;
+                    }else if(idoso==1 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd < MAX_QTD){
+                        char op;
+                        printf("\n\n\t\t\t\tInfelizmente não temos mais vagas gratuitas para idosos nesta sessao...");
+                        printf("\n\t\t\t\tMas possuímos %d vagas no total e seu ingresso terá 50%% de desconto ", MAX_QTD - compSessao.qtd);
+                        printf("\n\t\t\t\tDeseja continuar comprando ingresso? (S/N): \n");
+                        scanf("%c", &op);
+                        op=toupper(op);
+                        if(op!='S' && op!='N'){
+                            do{
+                                printf("\n\n\n\t\t\t\t Opção inválida, digite novamente: ");
+                                scanf(" %c", &op);
+                                op=toupper(op);
+                            }while(op!='S' && op!='N');
+                        }else{}
+                        if(op=='S'){
+                            printf("\n\n\n\t\t\t\tOK, seguiremos para a parte de compra...");
+                            printf("\n");
+                            fseek(sessaoLog, aux*sizeof(Sessao), 0);
+                            compSessao.qtd++;
+                            fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
+                            sessao.suc=2;
+                            fclose(sessaoLog);
+                            getchar();
+                            break;
+                        }else if(op=='N'){
+                            printf("\n\n\n\t\t\t\tOK, voce será redirecionado à seleção de sessões novamente...");
+                            printf("\n");
+                            sessao.suc=4;
+                            fclose(sessaoLog);
+                            //getchar();
+                            goto returnSessao;
+                        }
+                    }else if(idoso==1 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd >= MAX_QTD){
+                        printf("\n\n\n\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
+                        sessao.suc=1;
                         fclose(sessaoLog);
-                        getchar();
+                        //getchar();
+                        goto returnSessao;
                         break;
+                    }else if(compSessao.qtd < MAX_QTD){
+                        if(idoso==1 && compSessao.qtdIdoso<= MAX_QTD_IDOSO){
+                            printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD-compSessao.qtd, MAX_QTD_IDOSO-compSessao.qtdIdoso);
+                            sleep(1);
+                            printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
+                            printf("\n");
+                            fseek(sessaoLog, aux*sizeof(Sessao), 0);
+                            compSessao.qtd++;
+                            compSessao.qtdIdoso++;
+                            fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
+                            sessao.suc=3;
+                            fclose(sessaoLog);
+                            getchar();
+                            break;
+                        }else{
+                            printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD-compSessao.qtd);
+                            sleep(1);
+                            printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
+                            printf("\n");
+                            fseek(sessaoLog, aux*sizeof(Sessao), 0);
+                            compSessao.qtd++;
+                            fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
+                            sessao.suc=0;
+                            fclose(sessaoLog);
+                            getchar();
+                            break;
+                        }
                     }
                 }
+                aux++;
             }
-            aux++;
-        }
 
-        if(compSessao.expo!=sessao.expo && compSessao.hora!=sessao.hora && verificaMenu!=1){
-            fseek(sessaoLog, 0, 2);
-            sessao.qtd=0;
-            sessao.qtdIdoso=0;
+            if(verificaMenu!=1 && compSessao.expo!=sessao.expo && compSessao.hora!=sessao.hora || compSessao.expo==sessao.expo && compSessao.hora!=sessao.hora || compSessao.expo!=sessao.expo && compSessao.hora==sessao.hora){
+                fseek(sessaoLog, 0, 2);
+                sessao.qtd=0;
+                sessao.qtdIdoso=0;
 
-            if(idoso==1 ){
-                printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD, MAX_QTD_IDOSO);
-                sleep(1);
-                printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
-                printf("\n");
-                sessao.qtd++;
-                sessao.qtdIdoso++;
-                fwrite(&sessao,sizeof(Sessao), 1, sessaoLog);
-                getchar();
-                sessao.suc=3;
-                fclose(sessaoLog);
-            }else{
-                printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD);
-                sleep(1);
-                printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
-                printf("\n");
-                sessao.qtd++;;
-                fwrite(&sessao,sizeof(Sessao), 1, sessaoLog);
-                getchar();
-                sessao.suc=0;
-                fclose(sessaoLog);
+                if(idoso==1 ){
+                    printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD, MAX_QTD_IDOSO);
+                    sleep(1);
+                    printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
+                    printf("\n");
+                    sessao.qtd++;
+                    sessao.qtdIdoso++;
+                    fwrite(&sessao,sizeof(Sessao), 1, sessaoLog);
+                    getchar();
+                    sessao.suc=3;
+                    fclose(sessaoLog);
+                }else{
+                    printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD);
+                    sleep(1);
+                    printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
+                    printf("\n");
+                    sessao.qtd++;;
+                    fwrite(&sessao,sizeof(Sessao), 1, sessaoLog);
+                    getchar();
+                    sessao.suc=0;
+                    fclose(sessaoLog);
+                }
             }
-        }
     }
-
+    fim:
     return sessao;
 }
