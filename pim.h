@@ -6,16 +6,24 @@
 
 
 void trocaTela(){
-	printf("\n\n\n\n\t\t\t\tPressione qualquer tecla para passar para a próxima tela\n\n");
+	printf("\n\n\n\n\t\t\t\tPressione enter para passar para a próxima tela\n\n");
     getchar();
-    printf("\e[1;1H\e[2J");
+    system("clear");
 }
 
 void initArqs(){
-    FILE * a = fopen("bilhetes.csv", "w");
+    
+    FILE * a = fopen("bilhetes.csv", "r");
+    if(a==NULL){
+        fclose(a);
+        FILE * a = fopen("bilhetes.csv", "w");
+    }
     fclose(a);
-    FILE * b = fopen("cadastro.csv", "w");
+
+    FILE * b = fopen("sessao.dat", "r");
+    if(b==NULL){
+        fclose(b);
+        FILE * b = fopen("sessao.dat", "w");
+    }
     fclose(b);
-    FILE * c = fopen("sessao.csv", "w");
-    fclose(c);
 }

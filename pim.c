@@ -1,27 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <locale.h>
-#include <string.h>
-#include <ctype.h>
-#include<unistd.h>
-#include <time.h>
-#include "pim.h"
+#include <stdio.h> //funções basicas do prorama como printf e scanf
+#include <stdlib.h> //
+#include <locale.h> // formatação de linguagem e utf8
+#include <string.h> // trabalhar com strings 
+#include <ctype.h>  // função de toupper();
+#include <unistd.h> // função sleep e tipo size_t
+#include "pim.h"    // biblioteca proprietária
 
-//#define CAD_FILE "cadastro.csv"
-//#define TIC_FILE "bilhetes.csv"
-//#define SESSAO_FILE "sessao.csv"
 
-const int MAX_QTD = 10;
+const int MAX_QTD = 10;   //quantidade maxima por sessao 
 const int MAX_QTD_IDOSO = 2;
-
+const char sessaoFile[] = "sessao.dat";
+const char bilheteFile[] = "bilhetes.csv";
 
 typedef struct {
     int cID; 
-    char *nome;
+    char nome[101];
     char telefone[20];
     char email[101];
     int idade;
-    int idoso;
+    int idoso; // marcadaor se é idoso
 }Pessoa;
 
 typedef struct {
@@ -29,13 +26,12 @@ typedef struct {
     int hora;
     int qtd;
     int qtdIdoso;
-    int suc;
+    int suc; // marcador de sucesso na venda e tipo de bilhete
 }Sessao;
 
 typedef struct {
     int nID;
     Sessao sessao;
-
 }Bilhete;
 
 int verificaMenu;
@@ -58,7 +54,7 @@ int main(){
     char aceiteTicket;
     setlocale(LC_ALL,"pt_BR_utf8");
     initArqs();
-    printf("\e[1;1H\e[2J");
+    system("clear");
     do{
         
         verificaMenu=0;
@@ -79,10 +75,18 @@ int main(){
         printf("\t\t\t\t**0 - Sair                   **\n");
         printf("\t\t\t\t**    entre com sua opção    **\n");
         printf("\t\t\t\t*******************************\n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
         scanf("%d", &op);
         switch(op){
         case 0:
-            printf("\e[1;1H\e[2J");
+            system("clear");
             printf("\n");
             printf("\n");
             printf("\n");
@@ -97,57 +101,56 @@ int main(){
             trocaTela();
             break;
         case 1:
-            printf("\e[1;1H\e[2J");
+            system("clear");
 
             mostraCase1();
 
             aceiteTicket=ticket(1);
             verificaTicket(&aceiteTicket);
 
-            printf("\e[1;1H\e[2J");
+            system("clear");
             break;
         case 2:
-            printf("\e[1;1H\e[2J");
+            system("clear");
             mostraCase2();
             getchar();
-            printf("\e[1;1H\e[2J");
+            system("clear");
 
             aceiteTicket=ticket(2);
             verificaTicket(&aceiteTicket);
 
-            printf("\e[1;1H\e[2J");
+            system("clear");
             break;
         case 3:
-            printf("\e[1;1H\e[2J");
+            system("clear");
             mostraCase3();
             getchar();
-            printf("\e[1;1H\e[2J");
+            system("clear");
 
             aceiteTicket=ticket(3);
             verificaTicket(&aceiteTicket);
 
-            printf("\nvoltou\n");
-            //printf("\e[1;1H\e[2J");
+            system("clear");
             break;
         case 4:
-            printf("\e[1;1H\e[2J");
+            system("clear");
             mostraCase4();
             getchar();
-            printf("\e[1;1H\e[2J");
+            system("clear");
 
             aceiteTicket=ticket(4);
             verificaTicket(&aceiteTicket);
 
-            printf("\e[1;1H\e[2J");
+            system("clear");
             break;
         }
-    }while(op!=0 && verificaMenu==0);
+    }while(op!=0 && verificaMenu!=1);
     printf("\n");
     printf("\n");
     printf("\n");
     printf("\n");
     printf("\t\t\t\t     *********************\n");
-    printf("\t\t\t\t     **      Bye...     **\n");
+    printf("\t\t\t\t     **      Bye... :(  **\n");
     printf("\t\t\t\t     *********************\n");
     printf("\n");
     printf("\n");
@@ -155,10 +158,6 @@ int main(){
     printf("\n");
     return 0;
 }
-
-/*int mostraMenu(){
-
-}*/
 
 void mostraTitulo(int op){
     switch(op){
@@ -255,7 +254,7 @@ void mostraCase1(){
     printf("\t\t\t**********Curiosidade e fotos sobre os nomes citados********\n");
     printf("\n");
     sleep(1);
-    printf("\e[1;1H\e[2J");
+    system("clear");
     mostraTitulo(1);
 
     printf("\n");
@@ -554,9 +553,179 @@ void mostraCase2(){
 }
 void mostraCase3(){
     mostraTitulo(3);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t Paris, na França, será o palco das Olimpíadas de 2024, que acontecerão \n");
+    printf("\t\t\t de 24 de julho a 11 de agosto. A cerimônia de abertura está marcada para o \n");
+    printf("\t\t\t dia 26 de julho, marcando o início oficial dos jogos. É a terceira vez que a \n");
+    printf("\t\t\t cidade luz recebe os Jogos Olímpicos, após as edições memoráveis de 1900 e \n");
+    printf("\t\t\t 1924. \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+    trocaTela();
+    mostraTitulo(3);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t Nas Olimpíadas de Paris 2024, há uma incrível diversidade de 32 \n");
+    printf("\t\t\t esportes e 48 modalidades que estará em competição. Entre as emocionantes \n");
+    printf("\t\t\t disciplinas aquáticas, incluímos natação competitiva, natação artística, \n");
+    printf("\t\t\t maratona aquática, saltos ornamentais e polo aquático. \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+    trocaTela();
+    mostraTitulo(3);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t Os arqueiros mostrarão sua destreza no tiro com arco, enquanto os \n");
+    printf("\t\t\t corredores demonstrarão sua velocidade e resistência no atletismo. Outros \n");
+    printf("\t\t\t esportes fascinantes como badminton, basquete (incluindo a variante 3x3), \n");
+    printf("\t\t\t boxe, canoagem de velocidade e slalom, ciclismo em diversas categorias (BMX \n");
+    printf("\t\t\t freestyle, BMX Racing, de estrada e de pista), esgrima, futebol, golfe, ginástica \n");
+    printf("\t\t\t (artística, rítmica e de trampolim), handebol, hóquei, judô, pentatlo moderno, \n");
+    printf("\t\t\t remo, rugby e rugby sevens, vela, tiro esportivo, skate, escalada esportiva, \n");
+    printf("\t\t\t surfe, tênis, tênis de mesa, taekwondo, triatlo, vôlei de quadra e de praia, \n");
+    printf("\t\t\t levantamento de peso, e luta greco-romana e estilo livre estarão no centro das \n");
+    printf("\t\t\t atenções.  \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+    trocaTela();
+    mostraTitulo(3);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t Cada esporte promete momentos de habilidade, determinação e emoção \n");
+    printf("\t\t\t à medida que os atletas se esforçam para alcançar a grandeza olímpica. \n");
+    printf("\t\t\t  \n");
+    printf("\t\t\t\t Uma novidade empolgante nos Jogos Olímpicos de Paris 2024 é a \n");
+    printf("\t\t\t inclusão do Breaking, uma forma de dança de rua vibrante e cheia de energia. \n");
+    printf("\t\t\t Nesta competição, dançarinos talentosos, conhecidos como B-Boys e B-Girls, \n");
+    printf("\t\t\t enfrentarão desafios individuais em batalhas solo intensas, adicionando um \n");
+    printf("\t\t\t toque de criatividade ao evento. \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+    trocaTela();
+    mostraTitulo(3);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t Além disso, uma prova emocionante que estreia é o Slalom Extremo na \n");
+    printf("\t\t\t canoagem, onde quatro corajosos atletas descem por uma rampa ao mesmo \n");
+    printf("\t\t\t tempo, enfrentando obstáculos desafiadores pelo caminho. A destreza e a \n");
+    printf("\t\t\t habilidade serão essenciais para superar esse percurso desafiador. \n");
+    printf("\t\t\t  \n");
+    printf("\t\t\t\t Também haverá mudanças significativas e inovadoras. Na escalada \n");
+    printf("\t\t\t esportiva, os atletas competirão em boulder, lead e velocidade, com medalhas \n");
+    printf("\t\t\t concedidas em cada categoria. Competições mistas, incluindo modalidades \n");
+    printf("\t\t\t como marcha atlética e tiro com arco, trarão uma dinâmica nova, promovendo \n");
+    printf("\t\t\t igualdade de gênero.  \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+    
+    trocaTela();
+    mostraTitulo(3);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t Além disso, o pentatlo terá um percurso prolongado de 90 minutos, \n");
+    printf("\t\t\t envolvendo esgrima, natação, hipismo, tiro e corrida, desafiando a resistência e \n");
+    printf("\t\t\t estratégia dos competidores.  \n");
+    printf("\t\t\t  \n");
+    printf("\t\t\t\t  \n");
+    printf("\t\t\t Estas mudanças emocionantes prometem uma experiência olímpica \n");
+    printf("\t\t\t inovadora e memorável em Paris 2024. \n");
+    printf("\n");
+    printf("\n");
+    
+
 }
 void mostraCase4(){
     mostraTitulo(4);
+
+    trocaTela();
+    mostraTitulo(4);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t Israel é um país com um rico património cultural e artístico que reflete a \n");
+    printf("\t\t\t diversidade da sua população, que inclui comunidades judaicas, árabes, drusas \n");
+    printf("\t\t\t e outras comunidades étnicas. A cultura e a arte israelenses são uma \n");
+    printf("\t\t\t combinação fascinante de tradição e inovação. \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+    trocaTela();
+    mostraTitulo(4);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t Sobre a Religião, Israel é um centro importante para as três religiões \n");
+    printf("\t\t\t abraâmicas: Judaísmo, Cristianismo e Islamismo. Isso afetou intensamente a cultura \n");
+    printf("\t\t\t deste país. \n");
+    printf("\t\t\t  \n");
+    printf("\t\t\t\t Entre as línguas utilizadas em Israel, o hebraico é a língua oficial, enquanto o \n");
+    printf("\t\t\t árabe é a língua oficial em algumas partes do país, refletindo a variedade cultural. \n");
+    printf("\t\t\t  \n");
+    printf("\t\t\t\t Alguns dos feriados mais populares em Israel, como feriados religiosos como \n");
+    printf("\t\t\t Pessach (Páscoa) e Hanukkah (Festival das Luzes), são celebrados com grande \n");
+    printf("\t\t\t entusiasmo. Além disso, eventos culturais e musicais acontecem o ano todo. \n");
+    printf("\t\t\t  \n");
+    printf("\t\t\t\t Em Israel, a vida teatral é bastante animada, com destaque para o Teatro \n");
+    printf("\t\t\t Habima, localizado em Tel Aviv, que é considerado um dos teatros mais antigos em \n");
+    printf("\t\t\t todo o mundo. Além disso, a dança e a música tradicionais também ocupam um lugar \n");
+    printf("\t\t\t especial, sendo profundamente apreciadas na cultura local. \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+    trocaTela();
+    mostraTitulo(4);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t A comida de Israel é incrivelmente variada, fundindo influências da cultura \n");
+    printf("\t\t\t judaica, árabe e mediterrânea. Pratos populares incluem falafel, homus, shawarma e \n");
+    printf("\t\t\t uma variedade de pratos de peixe. A diversidade de sabores é realmente cativante. \n");
+    printf("\t\t\t  \n");
+    printf("\t\t\t\t A arquitetura em Israel combina estilos contemporâneos e clássicos. Tel Aviv \n");
+    printf("\t\t\t se destaca pela sua arquitetura Bauhaus, ao passo que Jerusalém abriga construções \n");
+    printf("\t\t\t antigas e sagradas. \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+    trocaTela();
+    mostraTitulo(4);
+
+    printf("\n");
+    printf("\n");
+    printf("\t\t\t\t A arquitetura em Israel é uma mescla fascinante de estilos modernos e \n");
+    printf("\t\t\t tradicionais. Tel Aviv é especialmente notável por sua arquitetura Bauhaus, enquanto \n");
+    printf("\t\t\t Jerusalém é rica em construções antigas e sagradas. É realmente interessante \n");
+    printf("\t\t\t observar essa diversidade arquitetônica no país. \n");
+    printf("\t\t\t  \n");
+    printf("\t\t\t\t A cena artística em Israel é incrivelmente diversificada, variando do tradicional \n");
+    printf("\t\t\t ao contemporâneo. Os artistas do país são internacionalmente reconhecidos por suas \n");
+    printf("\t\t\t valiosas contribuições para áreas como pintura, escultura e outras formas de \n");
+    printf("\t\t\t expressão visual. É impressionante ver como a arte em Israel é tão rica e eclética. \n");
+    printf("\t\t\t  \n");
+    printf("\n");
+    printf("\n");
+
+
 }
 
 void verificaTicket(char *resp){
@@ -566,21 +735,27 @@ void verificaTicket(char *resp){
             printf("\n");
             printf("\n");
             getchar();
-        }else{
-            printf("\n\t\t\t\tOk... Saindo... :(\n");
+        }else if(verificaMenu==1){
+            printf("\n\t\t\t\tOk... Voltando para o menu...\n");
             printf("\n");
             printf("\n");
             getchar();
         }
-    }else{}
+    }else{
+            printf("\n\t\t\t\tOk... Voltando para o menu...\n");
+            printf("\n");
+            printf("\n");
+            getchar();
+
+    }
 }
 char ticket(int expo){
     char ticket;
-    //Sessao sessao;
     trocaTela();
     mostraTitulo(5);
     printf("\n\t\t\t\tQuer comprar o Ticket? (S/N): ");
     scanf(" %c", &ticket);
+     while (getchar() != '\n');
     ticket=toupper(ticket);
     if(ticket!='S' && ticket!='N'){
         do{
@@ -592,9 +767,10 @@ char ticket(int expo){
         if(ticket=='S'){
             compraTicket(expo);
         }else if(ticket=='N'){
-            printf("\nOk, você será redirecionado ao menu...\n");
-            sleep(1);
-            verificaMenu=1;
+            printf("\n\t\t\t\tOk, você será redirecionado ao menu...\n");
+            verificaMenu==1;
+            printf("\n%d\n", verificaMenu);
+            while (getchar() != '\n');
         }
     }
     return ticket;
@@ -610,9 +786,9 @@ void compraTicket(int expo){
         trocaTela();
         sessao=validaSessao(expo, idoso);
     }while(sessao.suc==1);
-    //printf("\e[1;1H\e[2J");
+    system("clear");
     if (verificaMenu==0){
-        FILE * ticLog = fopen("bilhetes.csv", "r+");
+        FILE * ticLog = fopen(bilheteFile, "a");
         if(!ticLog){
             FILE * STDERRR = fopen("logErr.txt", "a");  
             fseek(STDERRR, 0, 2);
@@ -625,16 +801,24 @@ void compraTicket(int expo){
             switch (sessao.suc){
                 case 0: //compra idade<65
                     printf("\n\t\t\t\tO valor da inteira é R$20,00\n\t\t\t\tO pagamento será realizado na bilheteria do museu...");
-
+                    fprintf(ticLog,"%d;%d;%d;%s;%d;%s;%s\n", sessao.expo, sessao.hora, sessao.suc, cliente.nome, cliente.idade, cliente.telefone, cliente.email);
+                    printf("\n\t\t\t\tSessão: %d\n\t\t\t\tHorário: %d\n\t\t\t\tTipo de bilhete: %d\n\t\t\t\tNome cliente: %s\n\t\t\t\tIdade cliente: %d\n\t\t\t\tTelefone cliente: %s\n\t\t\t\tEmail cliente: %s\n", sessao.expo, sessao.hora, sessao.suc, cliente.nome, cliente.idade, cliente.telefone, cliente.email);
                     break;
                 case 1://falha na escolha de sessão
                     
                     break;
                 case 2://compra idade >=65 == 50% desconto >> sem vagas gratuitas disponiveis
                     printf("\n\t\t\t\tO valor da meia-entrada é R$10,00\n\t\t\t\tO pagamento será realizado na bilheteria do museu...");
+                    fprintf(ticLog,"%d;%d;%d;%s;%d;%s;%s\n", sessao.expo, sessao.hora, sessao.suc, cliente.nome, cliente.idade, cliente.telefone, cliente.email);
+                    printf("\n\t\t\t\tSessão: %d\n\t\t\t\tHorário: %d\n\t\t\t\tTipo de bilhete: %d\n\t\t\t\tNome cliente: %s\n\t\t\t\tIdade cliente: %d\n\t\t\t\tTelefone cliente: %s\n\t\t\t\tEmail cliente: %s\n", sessao.expo, sessao.hora, sessao.suc, cliente.nome, cliente.idade, cliente.telefone, cliente.email);
                     break;
                 case 3://compra idade >=65 grátis
                     printf("\n\t\t\t\tSua entrada é gratuita nesta sessão \n\t\t\t\tApenas realize o check in na bilheteria do museu...");
+                    fprintf(ticLog,"%d;%d;%d;%s;%d;%s;%s\n", sessao.expo, sessao.hora, sessao.suc, cliente.nome, cliente.idade, cliente.telefone, cliente.email);
+                    printf("\n\t\t\t\tSessão: %d\n\t\t\t\tHorário: %d\n\t\t\t\tTipo de bilhete: %d\n\t\t\t\tNome cliente: %s\n\t\t\t\tIdade cliente: %d\n\t\t\t\tTelefone cliente: %s\n\t\t\t\tEmail cliente: %s\n", sessao.expo, sessao.hora, sessao.suc, cliente.nome, cliente.idade, cliente.telefone, cliente.email);
+                    break;
+                case 4:
+
                     break;
                 default:
                     FILE * STDERRR = fopen("logErr.txt", "a");
@@ -644,6 +828,7 @@ void compraTicket(int expo){
                     fclose(STDERRR);
                     break;
             }
+            fclose(ticLog);
         }
     }else{}
     
@@ -673,7 +858,7 @@ Pessoa recebeCadastro(){
         op=toupper(op);
         if(op!='S' && op!='N'){
             do{
-                printf("\n\t\t\t\t Opção inválida, digite novamente...\nConfirmar dados? (S/N): ");
+                printf("\n\t\t\t\tOpção inválida, digite novamente...\n\t\t\t\tConfirmar dados? (S/N): ");
                 scanf(" %c", &op);
                 op=toupper(op);
             }while(op!='S' && op!='N');
@@ -682,42 +867,7 @@ Pessoa recebeCadastro(){
             printf("\n\t\t\t\tOK...\n\n");
         }else {}
     }while(op!= 'S');
-
-    
-    FILE *cad;
-    cad=fopen("cadastro.csv", "r+");
-    if(!cad){
-        FILE * STDERRR = fopen("logErr.txt", "a");
-        fseek(STDERRR, 0, 2);
-        printf("\n\n\n\t\t\t\tOcorreu um erro, favor reiniciar o programa e tentar novamente, caso persista contate a administração do museu\n\n");
-        fprintf(STDERRR,"Erro abertura do arquivo cadastro.csv\n");
-        fclose(STDERRR);
-        getchar();
-    }else{
-        int id, idade, aux=0;
-        char nome[101],tel[20],email[101];
-        for(int i = 0; cliente.nome == '\0' ; i++){
-            printf("%d\n", i);
-            cliente.nome[i] = toupper(cliente.nome[i]);
-        }
-        while(fscanf(cad, "%d;%[^;];%d;%s;%s\n", &id, nome, &idade, tel, email) == 5){
-            if(strcmp(nome, cliente.nome) == 0){ //achou cliente.no cadastro
-                printf("\n\t\t\t\tVoce foi encontrado no cadastro\n");
-                printf("\n\t\t\t\tSeguindo para compra do bilhete...\n");
-                if(cliente.idade >= 65){
-                    cliente.idoso = 1;
-                }else{
-                    cliente.idoso = 0;
-                }
-                fclose(cad);
-                return cliente;
-            }
-            aux++;
-        }
         
-        cliente.cID=aux+1;
-        fseek(cad, 0, 2);
-        fprintf(cad,"%03d;%s;%d;%s;%s\n", cliente.cID, cliente.nome, cliente.idade, cliente.telefone, cliente.email);
         printf("\n\t\t\t\tOK, cadastro realizado com sucesso...\n");
         printf("\t\t\t\tSeguindo para compra do bilhete...\n");
         sleep(2);
@@ -726,26 +876,15 @@ Pessoa recebeCadastro(){
         }else{
             cliente.idoso = 0;
         }
-        fclose(cad);
 
-    }
+
     return cliente;
 }
 
 Pessoa recebeDados(){
     Pessoa cliente;
-    char nome[101];
-    int i = 0;
     printf("\t\t\t\tdigite seu nome: ");
-    //fgets(nome, 101*sizeof(char), stdin);
-    scanf("%c", &nome[i]);
-    for(i = 0; nome == '\0' ; i++){
-        if(nome[i] == '\n'){
-            scanf("%c", &nome[i]);
-            nome[i]='\0';
-        }
-        cliente.nome[i]=nome[i];
-    }
+    scanf("%101[^\n]", cliente.nome);
     while (getchar() != '\n');
     
     printf("\t\t\t\tdigite sua idade: ");
@@ -753,19 +892,19 @@ Pessoa recebeDados(){
     while (getchar() != '\n');
     
     printf("\t\t\t\tdigite seu telefone: ");
-    scanf("%s", cliente.telefone);
+    scanf("%101[^\n]", cliente.telefone);
     while (getchar() != '\n');
 
     printf("\t\t\t\tdigite seu email: ");
-    scanf("%s", cliente.email);
-
+    scanf("%101[^\n]", cliente.email);
     while (getchar() != '\n');
-    printf("%s", cliente.nome);
+
     return cliente;
 }
 
 Sessao validaSessao(int expo, int idoso){
-    Sessao sessao, compSessao;
+    Sessao sessao;
+    Sessao compSessao;
     sessao.expo=expo;
     returnSessao:
     trocaTela();
@@ -778,39 +917,49 @@ Sessao validaSessao(int expo, int idoso){
     printf("\n");
     printf("\n");
     printf("\n");
-    printf("\t\t\t\t1 - 9h\t2 - 10h\t3 - 11h\n ");
-    printf("\t\t\t\t4 - 14h\t5 - 15h\t6 - 16h\n\t\t\t\t0 - voltar ao Menu \n");
+    printf("\t\t\t\t1 - 9h\t\t2 - 10h\n");
+    printf("\n\t\t\t\t3 - 11h\t\t4 - 14h\n ");
+    printf("\n\t\t\t\t5 - 15h\t\t6 - 16h\n\n\t\t\t\t  0 - voltar ao Menu \n\n\n");
     printf("\t\t\t\tEntre com sua opção: ");
     scanf("%d", &sessao.hora);
-    if(sessao.hora==0){
-        verificaMenu=1;
+    while (getchar() != '\n');
+    if(sessao.hora!=0 && sessao.hora!=1 && sessao.hora!=2 && sessao.hora!=3 && sessao.hora!=4 && sessao.hora!=5 && sessao.hora!=6){
+        do{
+            printf("\n\t\t\t\tOpção inválida, digite novamente...\n\t\t\t\tEntre com sua opção: ");
+            scanf("%d", &sessao.hora);
+        }while(sessao.hora!=0 && sessao.hora!=1 && sessao.hora!=2 && sessao.hora!=3 && sessao.hora!=4 && sessao.hora!=5 && sessao.hora!=6);
     }
+    if(sessao.hora==0){
+        sessao.suc==1;
+        verificaMenu==1;
+    }
+
     FILE* sessaoLog;
-    sessaoLog=fopen("sessao.csv", "r+");
+    sessaoLog=fopen(sessaoFile, "r+");
     if(!sessaoLog){
         FILE * STDERRR = fopen("logErr.txt", "a");
         fseek(STDERRR, 0, 2);
         printf("\n\n\n\t\t\t\tOcorreu um erro, favor reiniciar o programa e tentar novamente, caso persista contate a administração do museu\n\n");
-        fprintf(STDERRR,"Erro na abertura do arquivo sessao.csv\n");
+        fprintf(STDERRR,"Erro na abertura do arquivo sessao.dat\n");
         fclose(STDERRR);
         getchar();
     }else{
-        getchar();
-        
-        while(fscanf(sessaoLog, "%d;%d;%d;%d\n", &compSessao.expo, &compSessao.hora, &compSessao.qtd, &compSessao.qtdIdoso) == 4){
-            printf("\ndebugging\n");
-            getchar();
+        int aux=0;
+        while(fread(&compSessao, sizeof(Sessao), 1, sessaoLog)){
+
             if(compSessao.expo==sessao.expo && compSessao.hora==sessao.hora){
                 if(compSessao.qtd >= MAX_QTD){
                     printf("\n\n\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
                     sessao.suc=1;
                     fclose(sessaoLog);
-                    sleep(1);
+                    //getchar();
+                    goto returnSessao;
                     break;
-                }
-                else if(idoso==0 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd < MAX_QTD){
+                }else if(idoso==1 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd < MAX_QTD){
                     char op;
-                    printf("\n\n\t\t\t\tInfelizmente não temos mais vagas gratuitas para idosos nesta sessao... mas possuímos %d vagas no total e seu ingresso terá 50%% de desconto deseja continuar comprando ingresso? (S/N): \n", MAX_QTD - compSessao.qtd);
+                    printf("\n\n\t\t\t\tInfelizmente não temos mais vagas gratuitas para idosos nesta sessao...");
+                    printf("\n\t\t\t\tMas possuímos %d vagas no total e seu ingresso terá 50%% de desconto ", MAX_QTD - compSessao.qtd);
+                    printf("\n\t\t\t\tDeseja continuar comprando ingresso? (S/N): \n");
                     scanf("%c", &op);
                     op=toupper(op);
                     if(op!='S' && op!='N'){
@@ -819,105 +968,78 @@ Sessao validaSessao(int expo, int idoso){
                             scanf(" %c", &op);
                             op=toupper(op);
                         }while(op!='S' && op!='N');
-                    }
+                    }else{}
                     if(op=='S'){
                         printf("\n\n\n\t\t\t\tOK, seguiremos para a parte de compra...");
                         printf("\n");
-                        fseek(sessaoLog, -5, 2);
-                        fprintf(sessaoLog,"%02d",compSessao.qtd + 1);
-                        sleep(1);
+                        fseek(sessaoLog, aux*sizeof(Sessao), 0);
+                        compSessao.qtd++;
+                        fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
                         sessao.suc=2;
                         fclose(sessaoLog);
+                        getchar();
                         break;
                     }else if(op=='N'){
                         printf("\n\n\n\t\t\t\tOK, voce será redirecionado à seleção de sessões novamente...");
                         printf("\n");
+                        sessao.suc=1;
                         fclose(sessaoLog);
-                        sleep(1);
+                        //getchar();
                         goto returnSessao;
                     }
-                }
-                else if(idoso==0 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd >= MAX_QTD){
+                }else if(idoso==1 && compSessao.qtdIdoso >= MAX_QTD_IDOSO && compSessao.qtd >= MAX_QTD){
                     printf("\n\n\n\t\t\t\tInfelizmente não temos mais vagas nesta sessao... tente novamente...\n");
                     sessao.suc=1;
                     fclose(sessaoLog);
-                    sleep(1);
+                    //getchar();
+                    goto returnSessao;
                     break;
-                }
-                else if(compSessao.qtd < MAX_QTD){
-                    if(idoso==0 && compSessao.qtdIdoso<= MAX_QTD_IDOSO){
+                }else if(compSessao.qtd < MAX_QTD){
+                    if(idoso==1 && compSessao.qtdIdoso<= MAX_QTD_IDOSO){
                         printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD-compSessao.qtd, MAX_QTD_IDOSO-compSessao.qtdIdoso);
                         sleep(1);
                         printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
                         printf("\n");
-                        fseek(sessaoLog, -5, 2);
-                        fprintf(sessaoLog,"%02d;%d",compSessao.qtd + 1, compSessao.qtdIdoso + 1);
-                        sleep(1);
+                        fseek(sessaoLog, aux*sizeof(Sessao), 0);
+                        compSessao.qtd++;
+                        compSessao.qtdIdoso++;
+                        fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
                         sessao.suc=3;
                         fclose(sessaoLog);
+                        getchar();
                         break;
                     }else{
                         printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD-compSessao.qtd);
                         sleep(1);
                         printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
                         printf("\n");
-                        fseek(sessaoLog, -5, 2);
-                        fprintf(sessaoLog,"%02d",compSessao.qtd + 1);
-                        sleep(1);
+                        fseek(sessaoLog, aux*sizeof(Sessao), 0);
+                        compSessao.qtd++;
+                        fwrite(&compSessao,sizeof(Sessao), 1, sessaoLog);
                         sessao.suc=0;
                         fclose(sessaoLog);
-                        break;
-                    }
-                }
-
-            }else{
-                fseek(sessaoLog, 0, 2);
-                sessao.qtd=0;
-                sessao.qtdIdoso=0;
-                fprintf(sessaoLog,"%d;%d;%02d;%d\n", sessao.expo, sessao.hora, sessao.qtd, sessao.qtdIdoso);
-                printf("%d;%d;%02d;%d\n", sessao.expo, sessao.hora, sessao.qtd, sessao.qtdIdoso);
-
-                if(compSessao.qtd < MAX_QTD){
-                    if(idoso==0 ){
-                        printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD-sessao.qtd, MAX_QTD_IDOSO-sessao.qtdIdoso);
-                        sleep(1);
-                        printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
-                        printf("\n");
-                        fseek(sessaoLog, -5, 2);
-                        fprintf(sessaoLog,"%02d;%d",sessao.qtd + 1, sessao.qtdIdoso + 1);
-                        sleep(1);
-                        sessao.suc=3;
-                        fclose(sessaoLog);
-                        break;
-                    }else{
-                        printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao...\n", MAX_QTD-sessao.qtd);
-                        sleep(1);
-                        printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
-                        printf("\n");
-                        fseek(sessaoLog, -5, 2);
-                        fprintf(sessaoLog,"%02d",sessao.qtd + 1);
-                        sleep(1);
-                        sessao.suc=0;
-                        fclose(sessaoLog);
+                        getchar();
                         break;
                     }
                 }
             }
+            aux++;
         }
+
         if(compSessao.expo!=sessao.expo && compSessao.hora!=sessao.hora && verificaMenu!=1){
             fseek(sessaoLog, 0, 2);
             sessao.qtd=0;
             sessao.qtdIdoso=0;
-            fprintf(sessaoLog,"%d;%d;%02d;%d\n", sessao.expo, sessao.hora, sessao.qtd, sessao.qtdIdoso);
 
-            if(idoso==0 ){
+            if(idoso==1 ){
                 printf("\n\n\n\t\t\t\tTemos %d vagas disponiveis nesta sessao, sendo %d elas gratuitas ao idosos...\n", MAX_QTD, MAX_QTD_IDOSO);
                 sleep(1);
                 printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
                 printf("\n");
-                fseek(sessaoLog, -5, 2);
-                fprintf(sessaoLog,"%02d;%d",sessao.qtd + 1, sessao.qtdIdoso + 1);
-                sleep(1);
+                sessao.qtd++;
+                sessao.qtdIdoso++;
+                fwrite(&sessao,sizeof(Sessao), 1, sessaoLog);
+                getchar();
                 sessao.suc=3;
                 fclose(sessaoLog);
             }else{
@@ -925,16 +1047,13 @@ Sessao validaSessao(int expo, int idoso){
                 sleep(1);
                 printf("\n\n\n\t\t\t\tSeguiremos para a parte de compra...");
                 printf("\n");
-                fseek(sessaoLog, -5, 2);
-                fprintf(sessaoLog,"%02d",sessao.qtd + 1);
-                sleep(1);
+                sessao.qtd++;;
+                fwrite(&sessao,sizeof(Sessao), 1, sessaoLog);
+                getchar();
                 sessao.suc=0;
                 fclose(sessaoLog);
             }
-
-            printf("%d;%d;%02d;%d\n", sessao.expo, sessao.hora, sessao.qtd, sessao.qtdIdoso);
         }
-        getchar();
     }
 
     return sessao;
